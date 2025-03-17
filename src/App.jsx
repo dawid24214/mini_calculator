@@ -1,35 +1,67 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [num1, setNume1] = useState('');
+    const [num2, setNume2] = useState('');
+    const [result, setResult] = useState('');
+    const calculate = (operator) => {
+        const n1 = parseFloat(num1);
+        const n2 = parseFloat(num2);
+        if (isNaN(n1) || isNaN(n2)) {
+            setResult('Wprowadz poprawne liczby!');
+            return;
+        }
+        let res;
+        switch (operator){
+            case '+':
+                res = n1 + n2;
+                break;
+            case '-':
+                res = n1 - n2;
+                break;
+            case '*':
+                    res = n1 * n2;
+                    break;
+            case '/':
+                res = n2 !== 0 ? n1 / n2: 'Nie można dzielić przez 0!';
+                break;
+            default:
+                res = 'Błąd operacji ';
+        }
+        setResult(res)
+    };
+    return(
+    <div className=''>
+        <h2 className=''>Kalkulator</h2>
+        <input
+        type='text'
+        placeholder='Pierwsza Liczba'
+        value={num1}
+        onChange={(e) => setNume1(e.target.value)}
+        className=''
+        />
+        <input
+        type='text'
+        placeholder='Druga Liczba'
+        value={num2}
+        onChange={(e) => setNume2(e.target.value)}
+        className=''
+        />
+        <div className=''>
+            <button onClick={() => calculate('+')}>+</button>
+            <button onClick={() => calculate('-')}>-</button>
+            <button onClick={() => calculate('*')}>*</button>
+            <button onClick={() => calculate('/')}>/</button>
+        </div>
+        {result !== null && (
+            <p className=''>Wynik : {result}</p>
+        )}
+    </div>
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+
+
+    );
 }
 
 export default App
