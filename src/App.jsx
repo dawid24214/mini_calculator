@@ -35,28 +35,41 @@ function App() {
     <div className=''>
         <h2 className=''>Kalkulator</h2>
         <input
-        type='text'
+        type='number'
         placeholder='Pierwsza Liczba'
         value={num1}
         onChange={(e) => setNume1(e.target.value)}
         className=''
         />
         <input
-        type='text'
+        type='number'
         placeholder='Druga Liczba'
         value={num2}
         onChange={(e) => setNume2(e.target.value)}
         className=''
         />
-        <div className=''>
-            <button onClick={() => calculate('+')}>+</button>
-            <button onClick={() => calculate('-')}>-</button>
-            <button onClick={() => calculate('*')}>*</button>
-            <button onClick={() => calculate('/')}>/</button>
-        </div>
         {result !== null && (
             <p className=''>Wynik : {result}</p>
         )}
+        <div className=''>
+            <button onClick={() => calculate('/')}>/</button>
+            <button onClick={() => calculate('*')}>*</button>
+            <button onClick={() => calculate('-')}>-</button>
+            <button onClick={() => calculate('+')}>+</button>
+            <br/>
+            <button>7</button>
+            <button>8</button>
+            <button>9</button>
+            <br/>
+            <button>4</button>
+            <button>5</button>
+            <button>6</button>
+            <br/>
+            <button>1</button>
+            <button>2</button>
+            <button>3</button>
+            </div>
+        
     </div>
 
 
