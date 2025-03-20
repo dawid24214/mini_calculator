@@ -3,7 +3,8 @@ import { useState } from 'react'
 
 function App() {
     const [currentInput, setCurrentInput] = useState(''); //new code
-    const [operator, setOperator] = useState(null);
+    const [operator, setOperator] = useState('');
+    const [operation, setOperation] = useState('');
 
     const [num1, setNume1] = useState(null);
     const [num2, setNume2] = useState(null);
@@ -17,6 +18,7 @@ function App() {
         if (currentInput === '') return;
         setNume1(parseFloat(currentInput));
         setOperator(op);
+        setCurrentInput(currentInput + '' + op);
         setCurrentInput('');
     };
 
@@ -26,6 +28,7 @@ function App() {
 
         if (num1 === null || currentInput === '') return;
         const n2 = parseFloat(currentInput);
+        setNume2(n2);
 
         let res;
         switch (operator){
@@ -45,6 +48,7 @@ function App() {
                 res = 'Błąd operacji ';
         }
         setResult(res);
+        setOperation(`${num1} ${operator} ${n2} = ${res}`);
         setCurrentInput('');
         setNume1(null);
         setNume2(null);
@@ -57,6 +61,7 @@ function App() {
         setNume2(null);
         setOperator(null);
         setResult(null);
+        setOperation('');
     };
     return(
     <div className=''>
@@ -80,14 +85,17 @@ function App() {
         {/*className=''*/}
         {/*/>*/}
         <div className=''>
-            <button onClick={() => handleNumberClick('/')}>/</button>
-            <button onClick={() => handleNumberClick('*')}>*</button>
-            <button onClick={() => handleNumberClick('-')}>-</button>
-            <button onClick={() => handleNumberClick('+')}>+</button>
+            <h3>{operation}</h3>
+            <button onClick={() => handleOperatorClick('/')}>/</button>
+            <button onClick={() => handleOperatorClick('*')}>*</button>
+            <button onClick={() => handleOperatorClick('-')}>-</button>
+            <button onClick={() => handleOperatorClick('+')}>+</button>
+
             <br/>
             <button onClick={() => handleNumberClick(7)}>7</button>
             <button onClick={() => handleNumberClick(8)}>8</button>
             <button onClick={() => handleNumberClick(9)}>9</button>
+            <button onClick={calculateResult}>=</button>
             <br/>
             <button onClick={() => handleNumberClick(4)}>4</button>
             <button onClick={() => handleNumberClick(5)}>5</button>
@@ -96,10 +104,9 @@ function App() {
             <button onClick={() => handleNumberClick(1)}>1</button>
             <button onClick={() => handleNumberClick(2)}>2</button>
             <button onClick={() => handleNumberClick(3)}>3</button>
-            </div>
+        </div>
 
     </div>
-
 
 
     );
