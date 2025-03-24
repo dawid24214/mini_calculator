@@ -9,50 +9,73 @@ function App() {
     const [num1, setNume1] = useState(null);
     const [num2, setNume2] = useState(null);
     const [result, setResult] = useState(null);
+    const [elements, setElements] = useState(null);
 
 
     const handleNumberClick = (value) => {
         setCurrentInput((prev) => + value);
     };
     const handleOperatorClick = (op) =>{
-        if (currentInput === '') return;
-        setNume1(parseFloat(currentInput));
-        setOperator(op);
-        setCurrentInput(currentInput + '' + op);
-        setCurrentInput('');
+        if(currentInput === '') return;
+        setElements((prev) => [...prev, parseFloat(currentInput), op]);
+        setOperation((prev) => prev + '' + currentInput + '' + op);
     };
 
 
 
     const calculateResult = () => {
-
-        if (num1 === null || currentInput === '') return;
-        const n2 = parseFloat(currentInput);
-        setNume2(n2);
-
-        let res;
-        switch (operator){
-            case '+':
-                res = num1 + n2;
-                break;
-            case '-':
-                res = num1 - n2;
-                break;
-            case '*':
-                    res = num1 * n2;
-                    break;
-            case '/':
-                res = n2 !== 0 ? num1 / n2: 'Nie można dzielić przez 0!';
-                break;
-            default:
-                res = 'Błąd operacji ';
+        if (currentInput !== '') {
+            setElements((prev) => [...prev, parseFloat(currentInput)]);
         }
-        setResult(res);
-        setOperation(`${num1} ${operator} ${n2} = ${res}`);
+        let newElements = [...elements, parseFloat(currentInput)];
+        const calculatePriority = (ops) => {
+            for (let i = 0; i < newElements.length; i++){
+                if (ops.includes(newElements[i])){
+                    let result;
+                    const num1 = newElements[i-1];
+                    const num2 = newElements[i+1];
+
+                    switch (newElements[i]){
+                        case '*':
+                            result = num1 * num2;
+                            break;
+                        case '/':
+                            result = num2 !== 0 ? num1 / num2: 'Błąd';
+                            break;
+                        default:
+                            continue;
+                    }
+                    newElements.splice(i - 1,3,result);
+                    i --;
+                }
+            }
+        };
+        calculatePriority(['*', '/']);
+        for (let  i = 0; i < newElements.length; i++){
+            if (newElements[i] === '+' || newElements[i] === '-'){
+                let result;
+                const num1 = newElements[i - 1];
+                const num2 = newElements [i + 1];
+
+                switch (newElements[i]){
+                    case '+':
+                        result = num1 + num2;
+                        break;
+                    case '-':
+                        result = num1 - num2;
+                        break;
+                    default:
+                        continue;
+                }
+                newElements.splice(i - 1,3, result);
+                i--;
+            }
+        }
+        const finalResult = newElements[0];
+        setOperation((prev) => prev + '' + currentInput + '=' +finalResult);
         setCurrentInput('');
-        setNume1(null);
-        setNume2(null);
-        setOperator(null);
+        setElements([]);
+
 
     };
     const clearInput =  () =>{
